@@ -1,0 +1,971 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Sashimi REST API Swagger",
+    "description": "Rest API for Sashimi.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Sashimi Team"
+    }
+  },
+  "host": "192.168.9.22:8080",
+  "schemes": ["http"],
+  "basePath": "/api",
+  "produces": ["application/json"],
+  "tags": [
+    {
+      "name": "Channel",
+      "description": "Everything about your channel"
+    },
+    {
+      "name": "Topology",
+      "description": "Everything about topology"
+    },    
+    {
+      "name": "Chaincodes",
+      "description": "Everything about your chaincodes"
+    },
+    {
+      "name": "Blocks",
+      "description": "Everything about your blocks"
+    },
+    {
+      "name": "Transactions",
+      "description": "Everything about your transactions"
+    }
+  ],
+  "paths": {
+    "/channels": {
+      "get": {
+        "tags": ["Channel"],
+        "summary": "Query to fetch channels",
+        "description": "Query to fetch channels",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Channels"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/status/{channel_genesis_hash}": {
+      "get": {
+        "tags": ["Channel"],
+        "summary": "Query to get BlockCount on a channel",
+        "description": "Query to get BlockCount on a channel",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "chaincodeCount": {
+                  "type": "string"
+                },
+                "txCount": {
+                  "type": "string"
+                },
+                "peerCount": {
+                  "type": "string"
+                },
+                "latestBLock": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/curChannel": {
+      "get": {
+        "tags": ["Channel"],
+        "summary": "get Current channel",
+        "description": "get Current channel",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/curChannel"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/changeChannel/{channel_genesis_hash}": {
+      "get": {
+        "tags": ["Channel"],
+        "summary": "Query to get Change Channel on a channel",
+        "description": "Query to get Change Channel on a channel",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "currentChannel": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/chaincode/{channel_genesis_hash}": {
+      "get": {
+        "tags": ["Chaincodes"],
+        "summary": "Query to fetch all Installed/instantiated chaincodes",
+        "description": "Query to fetch all Installed/instantiated chaincodes",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "channel_genesis_hash": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/block/{channel_genesis_hash}/{number}": {
+      "get": {
+        "tags": ["Blocks"],
+        "summary": "Query Block By BlockNum",
+        "description": "Query Block By BlockNum",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "description": "block number",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "number": {
+                  "type": "string"
+                },
+                "previous_hash": {
+                  "type": "string"
+                },
+                "channel_genesis_hash": {
+                  "type": "string"
+                },
+                "data_hash": {
+                  "type": "string"
+                },
+                "transactions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "signature": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      },
+                      "payload": {
+                        "$ref": "#/definitions/blockPayload"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/block/transactions/{channel_genesis_hash}/{number}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Query to Fetch Block Transactions By BlockNum",
+        "description": "Query to Fetch Block Transactions By BlockNum",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "description": "block number",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "number": {
+                  "type": "number"
+                },
+                "txCount": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/blockActivity/{channel_genesis_hash}": {
+      "get": {
+        "tags": ["Blocks"],
+        "summary": "Query to Fetch Block Activity List",
+        "description": "Query to Fetch Block Acivity List",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "txcount": {
+                  "type": "number"
+                },
+                "datahash": {
+                  "type": "string"
+                },
+                "blockhash": {
+                  "type": "string"
+                },
+                "prehash": {
+                  "type": "string"
+                },
+                "createdt": {
+                  "type": "string"
+                },
+                "txhash": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/transaction/{channel_genesis_hash}/{txid}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Query to Get Transaction by Txid",
+        "description": "Query to Get Transaction by Txid",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "txid",
+            "in": "path",
+            "description": "transaction id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "row": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "channel_genesis_hash": {
+                      "type": "string"
+                    },
+                    "channelname": {
+                      "type": "string"
+                    },
+                    "blockid": {
+                      "type": "number"
+                    },
+                    "txhash": {
+                      "type": "string"
+                    },
+                    "createdt": {
+                      "type": "string"
+                    },
+                    "chaincodename": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "number"
+                    },
+                    "creator_msp_id": {
+                      "type": "string"
+                    },
+                    "endorser_msp_id": {
+                      "type": "string"
+                    },
+                    "chancode_id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "read_set": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Set"
+                      }
+                    },
+                    "write_set": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Set"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/txList/{channel_genesis_hash}/{number}/{txid}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Query to Get Trasaction List",
+        "description": "Query to Get Trasaction List",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_gensis_hash",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "description": "block number",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "txid",
+            "in": "path",
+            "description": "tx num in database，eg. 0",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "channelname": {
+                        "type": "string"
+                      },
+                      "channel_genesis_hash": {
+                        "type": "string"
+                      },
+                      "blockid": {
+                        "type": "number"
+                      },
+                      "txhash": {
+                        "type": "string"
+                      },
+                      "createdt": {
+                        "type": "string"
+                      },
+                      "chaincodename": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/topology/{channelName}": {
+      "get": {
+        "tags": ["Topology"],
+        "summary": "Query Get Topology",
+        "description": "Query Get Topology",
+        "parameters": [
+          {
+            "name": "channelName",
+            "in": "path",
+            "description": "channel name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },    
+    "/nodesStatus/{channelName}": {
+      "get": {
+        "tags": ["Channel"],
+        "summary": "Query Get NodesStatus",
+        "description": "Query Get NodesStatus",
+        "parameters": [
+          {
+            "name": "channelName",
+            "in": "path",
+            "description": "channel name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "nodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "host": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/blockAndTxList/{channel_genesis_hash}": {
+      "get": {
+        "tags": ["Blocks"],
+        "summary": "Query to Get Block List",
+        "description": "Query to Get Block List",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "blocknum": {
+                        "type": "number"
+                      },
+                      "channel_genesis_hash": {
+                        "type": "string"
+                      },
+                      "data_hash": {
+                        "type": "string"
+                      },
+                      "prehash": {
+                        "type": "string"
+                      },
+                      "channelname": {
+                        "type": "string"
+                      },
+                      "txCount": {
+                        "type": "number"
+                      },
+                      "createdt": {
+                        "type": "string"
+                      },
+                      "prev_blockhash": {
+                        "type": "string"
+                      },
+                      "blockhash": {
+                        "type": "string"
+                      },
+                      "txhash": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/txByMinute/{channel_genesis_hash}/{hours}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Query to Get Trasaction BY Minute",
+        "description": "Query to Get Trasaction By Minute",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "hours",
+            "in": "path",
+            "description": "hours ",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TxCount"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/txByHour/{channel_genesis_hash}/{days}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Query to Get Trasaction By Hour",
+        "description": "Queryto  Get Trasaction BY Hour",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "days",
+            "in": "path",
+            "description": "days",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TxCount"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/blocksByMinute/{channel_genesis_hash}/{hours}": {
+      "get": {
+        "tags": ["Blocks"],
+        "summary": "Query to Get Blocks BY Minute",
+        "description": "Query to Get Blocks By Minute",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "hours",
+            "in": "path",
+            "description": "hours ",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TxCount"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/blocksByHour/{channel_genesis_hash}/{days}": {
+      "get": {
+        "tags": ["Blocks"],
+        "summary": "Query to Get Blocks By Hour",
+        "description": "Query to Get Blocks By Hour",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "days",
+            "in": "path",
+            "description": "days",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TxCount"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/txByOrg/{channel_genesis_hash}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Query Get Trasaction By Org",
+        "description": "Query Get Trasaction BY Org",
+        "parameters": [
+          {
+            "name": "channel_genesis_hash",
+            "in": "path",
+            "description": "channel_genesis_hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string"
+                      },
+                      "creator_msp_id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/channels/info": {
+      "get": {
+        "tags": ["Channel"],
+        "summary": "Query to Get Channels Inforamtion",
+        "description": "Query to Get channel Information",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  }
+}

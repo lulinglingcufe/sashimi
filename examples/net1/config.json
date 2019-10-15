@@ -1,0 +1,89 @@
+{
+  "network-configs": {
+    "network-1": {
+      "version": "1.0",
+      "bccsp": "SW",
+      "libpath": "/tmp/libsmcryptokit.so",
+      "clients": {
+        "client-1": {
+          "tlsEnable": false,
+          "organization": "Org1MSP",
+          "channel": "composerchannel",
+          "credentialStore": {
+            "path": "./tmp/credentialStore_Org1/credential",
+            "cryptoStore": {
+              "path": "./tmp/credentialStore_Org1/crypto"
+            }
+          }
+        }
+      },
+      "channels": {
+        "composerchannel": {
+          "peers": {
+            "peer0.org1.example.com": {}
+          },
+          "connection": {
+            "timeout": {
+              "peer": {
+                "endorser": "6000",
+                "eventHub": "6000",
+                "eventReg": "6000"
+              }
+            }
+          }
+        }
+      },
+      "organizations": {
+        "OrdererMSP": {
+          "mspid": "OrdererMSP",
+          "fullpath": false,
+          "adminPrivateKey": {
+            "path":
+              "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore"
+          },
+          "signedCert": {
+            "path":
+              "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts"
+          }
+        },
+        "Org1MSP": {
+          "mspid": "Org1MSP",
+          "fullpath": false,
+          "adminPrivateKey": {
+            "path":
+              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore"
+          },
+          "signedCert": {
+            "path":
+              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts"
+          }
+        }           
+      },
+      "peers": {
+        "peer0.org1.example.com": {
+          "tlsCACerts": {
+            "path":
+              "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+          },
+          "mspId": "Org1MSP",
+          "url": "grpc://192.168.11.199:7051",
+          "eventUrl": "grpc://192.168.11.199:7053",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer0.org1.example.com"
+          }
+        }
+      },
+      "orderers": {
+        "orderer.example.com": {
+          "url": "grpc://192.168.11.199:7050",
+          "mspId": "OrdererMSP"
+        }                  
+      }
+    }
+  },
+  "blocksSyncTime": 10,
+  "consensus": "kafka",
+  "peerOrderFullLink": false,
+  "configtxgenToolPath": "/home/buwei/Desktop/fabric-samples/bin",
+  "license": "Apache-2.0"
+}
